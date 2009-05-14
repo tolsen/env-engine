@@ -8,3 +8,18 @@ CONFIG_FILE ?= .lime-config-generated.mk
 $(shell python $(ENV_ENGINE_DIR)/config_engine.py make > $(CONFIG_FILE) )
 
 include $(CONFIG_FILE)
+
+# buildbot needs the following targets
+# not all builds will necessarily do anything for all of the targets
+
+compile:
+
+reset:
+
+install:
+
+tests:
+
+stop:
+
+
