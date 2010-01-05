@@ -17,6 +17,10 @@ def decomment(line):
 def key_value_split(line):
   if ':' in line:
      return [field.strip() for field in line.split(':', 1)]
+  else:
+    words = line.split()
+    if len(words) == 2 and words[1] == 'unset':
+      return [words[0], None]
 
 possible_configfiles = [path.join(dir, CONFIG) for dir in searchdirs()]
 configfiles = [file for file in possible_configfiles if path.isfile(file)]
@@ -35,8 +39,11 @@ if __name__ == '__main__':
     if argv[1] == 'listfiles':
       stdout.write(' '.join(configfiles) + '\n')
     elif argv[1] in ('make', 'shell'):
-      for kv in config.items():
-        stdout.write('export %s=%s\n' % kv)
+      for k, v in config.items():
+        if v is not None:
+          stdout.write('export %s=%s\n' % (k,v))
+        else:
+          stdout.write('unexport %s\n' % k)
     else:
       stderr.write('unrecognized format argument\n')
       exit(1)
